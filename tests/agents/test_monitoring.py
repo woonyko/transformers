@@ -14,11 +14,13 @@
 # limitations under the License.
 
 import unittest
-from transformers.agents.monitoring import stream_to_gradio
-from transformers.agents.agents import ReactCodeAgent, ReactJsonAgent, AgentError
-from transformers.agents.agent_types import AgentImage
 
-class TestMonitoring(unittest.TestCase):
+from transformers.agents.agent_types import AgentImage
+from transformers.agents.agents import AgentError, ReactCodeAgent, ReactJsonAgent
+from transformers.agents.monitoring import stream_to_gradio
+
+
+class MonitoringTester(unittest.TestCase):
     def test_streaming_agent_text_output(self):
         # Create a dummy LLM engine that returns a final answer
         def dummy_llm_engine(prompt, **kwargs):
@@ -76,9 +78,7 @@ class TestMonitoring(unittest.TestCase):
         outputs = list(stream_to_gradio(agent, task="Test task"))
 
         # Check that the error message is yielded
-        print("OUTPUTTTTS", outputs)
         self.assertEqual(len(outputs), 3)
         final_message = outputs[-1]
         self.assertEqual(final_message.role, "assistant")
         self.assertIn("Simulated agent error", final_message.content)
-
